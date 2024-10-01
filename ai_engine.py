@@ -2,20 +2,18 @@ from flask import Flask, request, jsonify
 from openai import OpenAI
 import psycopg2
 import os
-client = OpenAI(api_key="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")
+
+# Set your OpenAI API key (store securely in environment variables)
+DATABASE_URL = os.environ.get('DATABASE_URL')
+OPENAI_KEY = os.environ.get('OPENAI_KEY')
+
+client = OpenAI(api_key=OPENAI_KEY)
 
 
 app = Flask(__name__)
 
-# Set your OpenAI API key (store securely in environment variables)
-
 # Connect to PostgreSQL
-conn = psycopg2.connect(
-    host="ep-cool-butterfly-a7wkcsxf.ap-southeast-2.aws.neon.tech",
-    database="tidy-coyote-13_db_3278897",
-    user="hasura_role_d7acdef7-cd52-4717-842d-06033d72be73",
-    password="nCH1wABM7fZo"
-)
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # Function to query OpenAI for parsing the search query
 from openai import OpenAI
